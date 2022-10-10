@@ -10,14 +10,7 @@ export default class UserRepository {
     }
 
     static async create(user) {
-        const newUserObj = {
-            username: user.username,
-            first_name: user.fname,
-            last_name: user.lname,
-            email_address: user.email
-        };
-
-        const newUser = await User.create(newUserObj);
+        const newUser = await User.create(user);
         return await newUser.save();
     }
 

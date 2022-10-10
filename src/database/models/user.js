@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '.';
+
 class User extends Model { }
 
 User.init(
@@ -8,25 +9,34 @@ User.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER,
-      unique: true,
+      type: DataTypes.INTEGER
     },
     username: {
+      type: DataTypes.STRING(18),
       allowNull: false,
-      type: DataTypes.TEXT,
+      unique: true
     },
     first_name: {
-      allowNull: false,
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
+      allowNull: false
     },
     last_name: {
-      allowNull: false,
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
+      allowNull: false
     },
     email_address: {
-      allowNull: false,
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false
     },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    }
   },
   {
     sequelize,

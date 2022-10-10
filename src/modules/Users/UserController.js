@@ -1,13 +1,17 @@
 import CannotDeleteException from "../../errors/CannotDeleteException";
 import CannotUpdateException from "../../errors/CannotUpdateException";
 import NotFoundException from "../../errors/NotFoundException";
+import ObjectHelper from "../../helpers/ObjectHelper";
 import UserRepository from "./UserRepository";
+import UserService from "./UserService";
 
 export default class UserController {
     static getAllUsers = async (req, res, next) => {
         try {
             const response = await UserRepository.getAllUsers();
-            if(!response) throw new NotFoundException(404, 'No users found')
+            if(!response) { 
+                throw new NotFoundException(404, 'No users found');
+            }
             
             return res.status(200).json(response);
         } catch (error) {
@@ -18,7 +22,9 @@ export default class UserController {
     static getUserById = async (req, res, next) => {
         try {
             const response = await UserRepository.getUserById(req.params.id);
-            if(!response) throw new NotFoundException(404, 'No users found')
+            if(!response) {
+                throw new NotFoundException(404, 'No users found');
+            }
     
             return res.status(200).json(response);
         } catch (error) {
@@ -28,7 +34,9 @@ export default class UserController {
     
     static createUser = async (req, res, next) => {
         try {
-            const response = await UserRepository.create(req.body.user);
+            const dbMappedUser = ObjectHelper.deleteEmptyProperties(UserService.mapRequestToDatabaseFields({...req.body.user}));
+            const response = await UserRepository.create(dbMappedUser);
+
             return res.status(200).json(response);
         } catch (error) {
             return next(error);
@@ -36,7 +44,7 @@ export default class UserController {
     }
     
     static deleteUser = async (req, res, next) => {
-        try {
+        try {            
             if(!await UserRepository.deleteById(req.params.id)){
                 throw new CannotDeleteException(403, 'The user was not deleted, please try again sometime later');
             };
@@ -49,11 +57,16 @@ export default class UserController {
     
     static patchUser = async (req, res, next) => {
         try {
-            if(!await UserRepository.getUserById(req.params.id)) { 
+            const userId = req.params.id;
+            const userObject = {...req.body.user};
+
+            if(!await UserRepository.getUserById(userId)) { 
                 throw new NotFoundException(404, 'No users found')
             }
-    
-            if(!await UserRepository.patchById(req.params.id, req.body.user)) {
+
+            const dbMappedFields = ObjectHelper.deleteEmptyProperties(UserService.mapRequestToDatabaseFields(userObject));
+
+            if(!await UserRepository.patchById(userId, dbMappedFields)) {
                 throw new CannotUpdateException(403, 'The user was not updated, please try again sometime later');
             }
     
