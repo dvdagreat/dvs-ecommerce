@@ -5,19 +5,21 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --experimental-specifier-resolution=node src/server.js"
+    "dev": "nodemon --experimental-specifier-resolution=node src/server.js",
+    "dev:warn": "nodemon --trace-warnings --experimental-specifier-resolution=node src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "-": "^0.0.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "mariadb": "^3.0.1",
     "sequelize": "^6.24.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "sequelize-auto": "^0.8.8",
+    "sequelize-cli": "^6.5.1"
   }
 }

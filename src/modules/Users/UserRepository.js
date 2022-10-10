@@ -1,4 +1,4 @@
-import User from '../../models/user'
+import User from '../../database/models/user'
 
 export default class UserRepository {
     static async getUserById(id) {
