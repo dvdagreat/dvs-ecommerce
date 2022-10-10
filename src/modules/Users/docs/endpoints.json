@@ -1,0 +1,46 @@
+{
+    "endpoints": [
+        {
+            "description": "get list of users",
+            "method": "GET",
+            "resource_uri": "/users",
+            "query_params": {
+                "first_name": {
+                    "type": "string",
+                    "description": "search by full or part of first name",
+                    "required": false
+                },
+                "last_name": {
+                    "type": "string",
+                    "description": "search by full or part of last name",
+                    "required": false
+                },
+                "username": {
+                    "type": "string",
+                    "description": "search by full or part of username",
+                    "required": false
+                },
+                "rows": {
+                    "type": "integer",
+                    "description": "number of rows to return",
+                    "required": false,
+                    "default": 30,
+                    "maximum": 100,
+                    "minimum": 30
+                },
+                "page": {
+                    "type": "integer",
+                    "description": "offset for results",
+                    "required": false,
+                    "default": 1
+                }
+            },
+            "responses": {
+                "200": {
+                    "type": "object",
+                    "model": "UserModel"
+                }
+            }
+        }
+    ]
+}

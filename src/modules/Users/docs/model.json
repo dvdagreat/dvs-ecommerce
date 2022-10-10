@@ -1,0 +1,36 @@
+{
+    "model": {
+        "fields": {
+            "username": {
+                "type": "string",
+                "description": "username of the user",
+                "pattern": "[a-zA-Z0-9_]{6, 18}"
+            },
+            "user_id": {
+                "type": "integer",
+                "description": "user id of the user",
+                "pattern": "[0-9]+"
+            },
+            "first_name": {
+                "type": "string",
+                "description": "first name of the user",
+                "pattern": "[a-zA-Z]{1, 50}"
+            },
+            "last_name": {
+                "type": "string",
+                "description": "last name of the user",
+                "pattern": "[a-zA-Z]{1, 50}"
+            },
+            "created_at": {
+                "type": "string",
+                "description": "creation date of the user",
+                "pattern": "*"
+            },
+            "email": {
+                "type": "string",
+                "description": "email address of the user",
+                "pattern": "*"
+            }
+        }
+    }
+}
