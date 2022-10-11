@@ -1,28 +1,18 @@
 import Joi from 'joi'
 import InvalidRequestParameter from "../../../errors/InvalidRequestParameter";
-import UserRole from '../constants/UserRoles';
 
 export default class RequestValidator {
-
-    static createUser = async (req, res, next) => {
+    static login = async (req, res, next) => {
         if(!req.body.user) {
             throw new InvalidRequestParameter(401, '"user" property not set');
         }
     
         const usernameSchema = Joi.string().alphanum().min(6).max(18).required();
-        const firstNameSchema = Joi.string().alphanum().max(50).required();
-        const lastNameSchema = Joi.string().alphanum().max(50).required();
-        const emailSchema = Joi.string().email().required();
         const passwordSchema = Joi.string().min(6).max(20).required();
-        const roleSchema =Joi.string().valid(UserRole.USER, UserRole.ADMIN).required();
     
         const userSchema = Joi.object({
             username: usernameSchema,
-            firstName: firstNameSchema,
-            lastName: lastNameSchema,
-            email: emailSchema,
             password: passwordSchema,
-            role: roleSchema
         }).required();
     
         try {
@@ -35,37 +25,16 @@ export default class RequestValidator {
         }    
     }
 
-    static deleteUser = (req, res, next) => {
-        if(!req.params.id || isNaN(req.params.id)) {
-            return next(new InvalidRequestParameter(403, 'Invalid id provided'));
-        }
-    
-        return next();
-    }
-
-    static getUserById = (req, res, next) => {
-        if(!req.params.id || isNaN(req.params.id)) {
-            throw new InvalidRequestParameter(404, 'Invalid id provided');
-        }
-    
-        return next();
-    }
-
-    static patchUser = async (req, res, next) => {
-        if(!req.params.id || isNaN(req.params.id)) {
-            return next(new InvalidRequestParameter(403, 'Invalid id provided'));
-        }
-        
+    static register = async (req, res, next) => {
         if(!req.body.user) {
             throw new InvalidRequestParameter(401, '"user" property not set');
         }
     
-        const usernameSchema = Joi.string().alphanum().min(6).max(18);
-        const firstNameSchema = Joi.string().alphanum().max(50);
-        const lastNameSchema = Joi.string().alphanum().max(50);
-        const emailSchema = Joi.string().email();
-        const passwordSchema = Joi.string().min(6).max(20);
-        const roleSchema =Joi.string().valid(UserRole.USER, UserRole.ADMIN);
+        const usernameSchema = Joi.string().alphanum().min(6).max(18).required();
+        const firstNameSchema = Joi.string().alphanum().max(50).required();
+        const lastNameSchema = Joi.string().alphanum().max(50).required();
+        const emailSchema = Joi.string().email().required();
+        const passwordSchema = Joi.string().min(6).max(20).required();
     
         const userSchema = Joi.object({
             username: usernameSchema,
@@ -73,8 +42,7 @@ export default class RequestValidator {
             lastName: lastNameSchema,
             email: emailSchema,
             password: passwordSchema,
-            role: roleSchema
-        }).min(1);
+        }).required();
     
         try {
             await userSchema.validateAsync(req.body.user, { abortEarly: false });
