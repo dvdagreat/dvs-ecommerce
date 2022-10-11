@@ -1,6 +1,8 @@
 import CannotDeleteException from "../../errors/CannotDeleteException";
 import CannotUpdateException from "../../errors/CannotUpdateException";
+import EntityAlreadyExists from "../../errors/EntityAlreadyExists";
 import NotFoundException from "../../errors/NotFoundException";
+import EncryptionHelper from "../../helpers/EncryptionHelper";
 import ObjectHelper from "../../helpers/ObjectHelper";
 import UserRepository from "./UserRepository";
 import UserService from "./UserService";
@@ -34,10 +36,20 @@ export default class UserController {
     
     static createUser = async (req, res, next) => {
         try {
-            const dbMappedUser = ObjectHelper.deleteEmptyProperties(UserService.mapRequestToDatabaseFields({...req.body.user}));
-            const response = await UserRepository.create(dbMappedUser);
+            const username = req.body.user.username;
+            const email = req.body.user.email;
 
-            return res.status(200).json(response);
+            const user = await UserRepository.findIdentity(username, email);
+            if(user) {
+                throw new EntityAlreadyExists(403, 'User already registered');
+            }
+
+            const dbMappedUser = ObjectHelper.deleteEmptyProperties(UserService.mapRequestToDatabaseFields({...req.body.user}));
+            dbMappedFields.password = EncryptionHelper.encryptPassword(dbMappedFields.password);
+
+            await UserRepository.create(dbMappedUser);
+
+            return res.status(200).json({ message: 'User successfully created' });
         } catch (error) {
             return next(error);
         }
@@ -49,7 +61,7 @@ export default class UserController {
                 throw new CannotDeleteException(403, 'The user was not deleted, please try again sometime later');
             };
     
-            return res.status(200).json(response);
+            return res.status(200).json({ message: 'User successfully deleted' });
         } catch (error) {
             return next(error);
         }

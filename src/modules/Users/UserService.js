@@ -5,6 +5,8 @@ export default class UserService {
             first_name: user.firstName,
             last_name: user.lastName,
             email_address: user.email,
+            password: user.password,
+            role: user.role
         }
     }
 }

@@ -29,6 +29,14 @@ User.init(
       unique: true,
       allowNull: false
     },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE

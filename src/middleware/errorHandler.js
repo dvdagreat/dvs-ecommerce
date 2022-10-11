@@ -8,5 +8,9 @@ export default function errorHandler(error, req, res, next) {
         return res.status(500).json({message: error.errors[0].message});
     }
 
+    if(error.type === 'entity.parse.failed') {
+        return res.status(403).json({message: 'json body parse failed'});
+    }
+
     return res.status(error.statusCode ?? 400).json({message: error.message});
 }

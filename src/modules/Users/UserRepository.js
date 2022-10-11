@@ -1,8 +1,38 @@
 import User from '../../database/models/user'
+import { Op } from 'sequelize';
 
 export default class UserRepository {
     static async getUserById(id) {
         return await User.findByPk(id);
+    }
+
+    static async findByUsername(username) {
+        return await User.findOne({
+            where: { username }
+        });
+    }
+
+    static async findIdentity(username, email) {
+        const usernameFilter = {
+            [Op.eq]: username
+        };
+
+        const emailFilter = {
+            [Op.eq]: email
+        };
+        
+        return await User.findOne({
+            where: {
+                [Op.or]: [
+                    { 
+                        email_address: emailFilter, 
+                    },
+                    { 
+                        username: usernameFilter, 
+                    }
+                ]
+            }
+        });
     }
 
     static async getAllUsers(filters) {
