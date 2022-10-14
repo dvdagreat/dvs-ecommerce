@@ -1,4 +1,4 @@
-import Product from '../../database/models/product'
+import { Product } from '../../database/models';
 
 export default class ProductRepository {
     static async getById(id) {

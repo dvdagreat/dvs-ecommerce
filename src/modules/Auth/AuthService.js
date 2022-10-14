@@ -4,6 +4,7 @@ export default class AuthService {
             username: dbUser.username,
             role: dbUser.role,
             email: dbUser.email_address,
+            id: dbUser.id
         }
     }
 }

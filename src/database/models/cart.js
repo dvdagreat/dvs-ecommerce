@@ -1,9 +1,10 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
+import User from './user';
 
-class Product extends Model { }
+class Cart extends Model { }
 
-Product.init(
+Cart.init(
   {
     id: {
       allowNull: false,
@@ -11,17 +12,13 @@ Product.init(
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    price: {
-      type: DataTypes.FLOAT,
-      allowNull: false
-    },
-    quantity: {
+    user_id: {
+      allowNull: false,
       type: DataTypes.INTEGER,
-      allowNull: false
+      references: {
+        model: User,
+        key: 'id'
+      }
     },
     createdAt: {
       allowNull: false,
@@ -37,8 +34,8 @@ Product.init(
   },
   {
     sequelize,
-    modelName: 'Product'
+    modelName: 'Cart'
   },
 );
 
-export default Product;
+export default Cart;

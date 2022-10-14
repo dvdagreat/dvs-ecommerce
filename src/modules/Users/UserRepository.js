@@ -1,4 +1,4 @@
-import User from '../../database/models/user'
+import { User } from '../../database/models';
 import { Op } from 'sequelize';
 
 export default class UserRepository {
