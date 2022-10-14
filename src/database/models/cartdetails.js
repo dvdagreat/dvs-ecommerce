@@ -1,9 +1,11 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
+import Cart from './cart';
+import Product from './product';
 
-class Product extends Model { }
+class CartDetail extends Model { }
 
-Product.init(
+CartDetail.init(
   {
     id: {
       allowNull: false,
@@ -11,13 +13,21 @@ Product.init(
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
+    cart_id: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      references: {
+        model: Cart,
+        key: 'id'
+      }
     },
-    price: {
-      type: DataTypes.FLOAT,
-      allowNull: false
+    product_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      references: {
+        model: Product,
+        key: 'id'
+      }
     },
     quantity: {
       type: DataTypes.INTEGER,
@@ -37,8 +47,8 @@ Product.init(
   },
   {
     sequelize,
-    modelName: 'Product'
+    modelName: 'CartDetail'
   },
 );
 
-export default Product;
+export default CartDetail;

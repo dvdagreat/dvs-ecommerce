@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv'
-import { sequelize } from './database/models'
+import sequelize from './database/db';
 
 import app from './app';
 
